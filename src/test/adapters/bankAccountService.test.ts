@@ -27,7 +27,7 @@ describe("Bank Account Service", () => {
 
       describe("And the client makes a deposit of £1000 on 10-01-2012", () => {
         beforeEach(() => {
-          mockNow.mockReturnValue(new Date(2012, 1,10))
+          mockNow.mockReturnValue(new Date("2012-01-10").toLocaleDateString('en-GB'))
           bankAccount.deposit(1000)
         })
 
@@ -39,6 +39,22 @@ describe("Bank Account Service", () => {
           it('should print a copy of the bank statement', () => {
             expect(mockPrint).toBeCalledWith(expect.stringMatching(/Date\s+\|\| Amount\s+\|\| Balance/))
             expect(mockPrint).toBeCalledWith(expect.stringMatching(/10\/01\/2012\s+\|\| 1000\s+\|\| 1000/))
+          })
+        })
+      })
+      describe("And the client makes a deposit of £2000 on 13-01-2012", () =>{
+        beforeEach(() => {
+          mockNow.mockReturnValue(new Date("2012-01-13").toLocaleDateString('en-GB'))
+          bankAccount.deposit(2000)
+        } )
+        describe("When the client prints their bank statement", () => {
+          beforeEach(() => {
+            bankAccount.printStatement()
+          })
+
+          it('should print a copy of the bank statement', () => {
+            expect(mockPrint).toBeCalledWith(expect.stringMatching(/Date\s+\|\| Amount\s+\|\| Balance/))
+            expect(mockPrint).toBeCalledWith(expect.stringMatching(/13\/01\/2012\s+\|\| 2000\s+\|\| 2000/))
           })
         })
       })
